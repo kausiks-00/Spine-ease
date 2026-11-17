@@ -1,87 +1,65 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SpineEase — Здоровая осанка</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <div class="app">
-    <!-- Шапка -->
-    <header class="header">
-      <div>
-        <h1>SpineEase</h1>
-        <p class="subtitle">Твоя спина скажет спасибо</p>
-      </div>
-      <button id="premiumBadge" class="badge free" onclick="openPaywall()">FREE</button>
-    </header>
+:root {
+  --bg: #f4f7f6;
+  --card: #ffffff;
+  --primary: #2a9d8f;
+  --primary-dark: #21867a;
+  --accent: #f4a261;
+  --text: #1f2933;
+  --muted: #616e7c;
+}
 
-    <!-- Прогресс пользователя -->
-    <section class="stats-card">
-      <div class="stat">
-        <span id="streakCount" class="stat-num">0</span>
-        <span class="stat-label">Дней подряд</span>
-      </div>
-      <div class="stat">
-        <span id="workoutsCount" class="stat-num">0</span>
-        <span class="stat-label">Тренировок</span>
-      </div>
-      <div class="stat">
-        <span id="minutesCount" class="stat-num">0</span>
-        <span class="stat-label">Минут</span>
-      </div>
-    </section>
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+body { background: var(--bg); color: var(--text); display: flex; justify-content: center; min-height: 100vh; }
+.app { width: 100%; max-width: 440px; padding: 20px; }
 
-    <!-- Список программ -->
-    <main id="homeView">
-      <h2 class="section-title">Программы тренировок</h2>
-      <div id="programsList" class="programs-list"></div>
-    </main>
+.header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+h1 { font-size: 24px; font-weight: 800; color: var(--primary-dark); }
+.subtitle { font-size: 13px; color: var(--muted); }
 
-    <!-- Экран активной тренировки -->
-    <section id="workoutView" class="workout-view hidden">
-      <button class="back-btn" onclick="exitWorkout()">← Назад к списку</button>
-      <h2 id="workoutTitle">Название</h2>
-      <div class="exercise-box">
-        <div id="exerciseStep" class="step-indicator">Упражнение 1 из 3</div>
-        <h3 id="exerciseName">Название упражнения</h3>
-        <p id="exerciseDesc">Описание техники выполнения...</p>
-        <div id="timerDisplay" class="timer">00:30</div>
-      </div>
-      <div class="controls">
-        <button id="timerToggleBtn" class="btn primary" onclick="toggleTimer()">Старт</button>
-        <button class="btn secondary" onclick="nextExercise()">Пропустить →</button>
-      </div>
-    </section>
+.badge { border: none; padding: 6px 12px; border-radius: 20px; font-weight: 700; font-size: 12px; cursor: pointer; }
+.badge.free { background: #e4e7eb; color: var(--text); }
+.badge.pro { background: linear-gradient(135deg, #f4a261, #e76f51); color: #fff; }
 
-    <!-- Модальное окно Premium (Paywall) -->
-    <div id="paywallModal" class="modal hidden">
-      <div class="modal-content">
-        <button class="close-modal" onclick="closePaywall()">✕</button>
-        <div class="crown">👑</div>
-        <h2>SpineEase Premium</h2>
-        <p class="modal-desc">Сними ограничения и восстанови спину быстрее</p>
-        <ul class="perks">
-          <li>✓ Все реабилитационные и вечерние программы</li>
-          <li>✓ Персональный план при болях в шее и пояснице</li>
-          <li>✓ Расширенная статистика и напоминания</li>
-        </ul>
-        <div class="plans">
-          <div class="plan selected" onclick="selectPlan(this, 'Год')">
-            <strong>$24.99 / год</strong>
-            <span>Выгодно (-60%) • 7 дней бесплатно</span>
-          </div>
-          <div class="plan" onclick="selectPlan(this, 'Месяц')">
-            <strong>$4.99 / мес</strong>
-            <span>Оплата каждый месяц</span>
-          </div>
-        </div>
-        <button class="btn premium-btn" onclick="activatePremium()">Попробовать Premium</button>
-      </div>
-    </div>
-  </div>
+.stats-card { background: var(--card); border-radius: 16px; padding: 16px; display: flex; justify-content: space-around; box-shadow: 0 4px 12px rgba(0,0,0,0.04); margin-bottom: 24px; }
+.stat { text-align: center; }
+.stat-num { display: block; font-size: 22px; font-weight: 800; color: var(--primary); }
+.stat-label { font-size: 12px; color: var(--muted); }
 
-  <script src="app.js"></script>
-</body>
-</html>
+.section-title { font-size: 18px; margin-bottom: 12px; }
+.programs-list { display: flex; flex-direction: column; gap: 12px; }
+
+.program-card { background: var(--card); border-radius: 16px; padding: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.04); cursor: pointer; transition: transform 0.15s; position: relative; border: 2px solid transparent; }
+.program-card:active { transform: scale(0.98); }
+.program-card.locked { opacity: 0.85; border-color: #fde8d7; }
+.program-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+.program-title { font-weight: 700; font-size: 16px; }
+.tag { font-size: 11px; padding: 3px 8px; border-radius: 8px; font-weight: 700; }
+.tag.free { background: #e6f4f1; color: var(--primary-dark); }
+.tag.pro { background: #fff3e6; color: #d97706; }
+.program-meta { font-size: 13px; color: var(--muted); }
+
+.hidden { display: none !important; }
+.back-btn { background: none; border: none; color: var(--primary); font-weight: 600; margin-bottom: 16px; cursor: pointer; font-size: 15px; }
+.exercise-box { background: var(--card); border-radius: 20px; padding: 24px; text-align: center; margin: 16px 0; box-shadow: 0 6px 20px rgba(0,0,0,0.05); }
+.step-indicator { font-size: 12px; color: var(--primary); font-weight: 700; text-transform: uppercase; margin-bottom: 8px; }
+#exerciseName { font-size: 20px; margin-bottom: 10px; }
+#exerciseDesc { font-size: 14px; color: var(--muted); line-height: 1.5; margin-bottom: 20px; }
+.timer { font-size: 48px; font-weight: 800; color: var(--text); font-variant-numeric: tabular-nums; }
+
+.controls { display: flex; gap: 10px; }
+.btn { flex: 1; padding: 14px; border: none; border-radius: 14px; font-size: 16px; font-weight: 700; cursor: pointer; }
+.btn.primary { background: var(--primary); color: #fff; }
+.btn.secondary { background: #e4e7eb; color: var(--text); }
+
+/* Paywall Modal */
+.modal { position: fixed; inset: 0; background: rgba(0,0,0,0.55); display: flex; align-items: flex-end; justify-content: center; z-index: 100; }
+.modal-content { background: #fff; width: 100%; max-width: 440px; border-radius: 24px 24px 0 0; padding: 24px; position: relative; text-align: center; }
+.close-modal { position: absolute; right: 16px; top: 16px; background: #f0f0f0; border: none; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; }
+.crown { font-size: 40px; margin-bottom: 8px; }
+.modal-desc { color: var(--muted); font-size: 14px; margin: 6px 0 16px; }
+.perks { text-align: left; list-style: none; margin-bottom: 18px; font-size: 14px; display: flex; flex-direction: column; gap: 8px; }
+.plans { display: flex; flex-direction: column; gap: 10px; margin-bottom: 18px; }
+.plan { border: 2px solid #e4e7eb; border-radius: 14px; padding: 12px; text-align: left; cursor: pointer; display: flex; flex-direction: column; }
+.plan.selected { border-color: var(--accent); background: #fffaf5; }
+.plan span { font-size: 12px; color: var(--muted); }
+.premium-btn { width: 100%; background: linear-gradient(135deg, #f4a261, #e76f51); color: #fff; }
