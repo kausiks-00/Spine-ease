@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SpineEase — Здоровая осанка</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+    <!-- Шапка -->
+    <header class="header">
+      <div>
+        <h1>SpineEase</h1>
+        <p class="subtitle">Твоя спина скажет спасибо</p>
+      </div>
+      <button id="premiumBadge" class="badge free" onclick="openPaywall()">FREE</button>
+    </header>
+
+    <!-- Прогресс пользователя -->
+    <section class="stats-card">
+      <div class="stat">
+        <span id="streakCount" class="stat-num">0</span>
+        <span class="stat-label">Дней подряд</span>
+      </div>
+      <div class="stat">
+        <span id="workoutsCount" class="stat-num">0</span>
+        <span class="stat-label">Тренировок</span>
+      </div>
+      <div class="stat">
+        <span id="minutesCount" class="stat-num">0</span>
+        <span class="stat-label">Минут</span>
+      </div>
+    </section>
+
+    <!-- Список программ -->
+    <main id="homeView">
+      <h2 class="section-title">Программы тренировок</h2>
+      <div id="programsList" class="programs-list"></div>
+    </main>
+
+    <!-- Экран активной тренировки -->
+    <section id="workoutView" class="workout-view hidden">
+      <button class="back-btn" onclick="exitWorkout()">← Назад к списку</button>
+      <h2 id="workoutTitle">Название</h2>
+      <div class="exercise-box">
+        <div id="exerciseStep" class="step-indicator">Упражнение 1 из 3</div>
+        <h3 id="exerciseName">Название упражнения</h3>
+        <p id="exerciseDesc">Описание техники выполнения...</p>
+        <div id="timerDisplay" class="timer">00:30</div>
+      </div>
+      <div class="controls">
+        <button id="timerToggleBtn" class="btn primary" onclick="toggleTimer()">Старт</button>
+        <button class="btn secondary" onclick="nextExercise()">Пропустить →</button>
+      </div>
+    </section>
+
+    <!-- Модальное окно Premium (Paywall) -->
+    <div id="paywallModal" class="modal hidden">
+      <div class="modal-content">
+        <button class="close-modal" onclick="closePaywall()">✕</button>
+        <div class="crown">👑</div>
+        <h2>SpineEase Premium</h2>
+        <p class="modal-desc">Сними ограничения и восстанови спину быстрее</p>
+        <ul class="perks">
+          <li>✓ Все реабилитационные и вечерние программы</li>
+          <li>✓ Персональный план при болях в шее и пояснице</li>
+          <li>✓ Расширенная статистика и напоминания</li>
+        </ul>
+        <div class="plans">
+          <div class="plan selected" onclick="selectPlan(this, 'Год')">
+            <strong>$24.99 / год</strong>
+            <span>Выгодно (-60%) • 7 дней бесплатно</span>
+          </div>
+          <div class="plan" onclick="selectPlan(this, 'Месяц')">
+            <strong>$4.99 / мес</strong>
+            <span>Оплата каждый месяц</span>
+          </div>
+        </div>
+        <button class="btn premium-btn" onclick="activatePremium()">Попробовать Premium</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
